@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC
+        "-//mybatis.org//DTD com.example.Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.demo.ActivitiDemo.mapper.AlarmDetailMapper">
+
+	<resultMap type="com.demo.ActivitiDemo.bean.AlarmDetailDTO" id="result">
+		<result property="id" column="id" />
+		<result property="serialNo" column="serialNo" />
+		<result property="contractNo" column="contractNo" />
+		<result property="product" column="product" />
+		<result property="alarmDesc" column="alarmDesc" />
+		<result property="alarmType" column="alarmType" />
+		<result property="alarmDate" column="alarmDate" />
+		<result property="alarmTime" column="alarmTime" />
+		<result property="handleState" column="handleState" />
+		<result property="instanceId" column="instanceId" />
+		<result property="execId" column="execId" />
+		<result property="nodeState" column="nodeState" />
+		<result property="createTime" column="createTime" />
+		<result property="updateTime" column="updateTime" />
+		<result property="createUser" column="createUser" />
+		<result property="updateUser" column="updateUser" />
+	</resultMap>
+
+	<select id="listDetails" resultMap="result">
+		select * from alarm_details
+	</select>
+	
+	<insert id="insertAlarmDetail" parameterType="com.demo.ActivitiDemo.bean.AlarmDetailDTO" 
+	keyProperty="id" useGeneratedKeys="true">
+		insert into alarm_details
+		(
+		id,
+		serialNo,
+		contractNo,
+		product,
+		alarmDesc,
+		alarmType,
+		alarmDate,
+		alarmTime,
+		handleState,
+		instanceId,
+		execId,
+		nodeState,
+		createTime,
+		updateTime,
+		createUser,
+		updateUser
+		)
+		values
+		(
+		#{id},
+		#{serialNo},
+		#{contractNo},
+		#{product},
+		#{alarmDesc},
+		#{alarmType},
+		#{alarmDate},
+		#{alarmTime},
+		#{handleState},
+		#{instanceId},
+		#{execId},
+		#{nodeState},
+		now(),
+		now(),
+		#{createUser},
+		#{updateUser}
+		)
+	</insert>
+	
+	<update id="updateAlarmDetail" parameterType="com.demo.ActivitiDemo.bean.AlarmDetailDTO">
+		update alarm_details
+		<set>
+			<if test="serialNo!=null">
+				serialNo=#{serialNo},
+			</if>
+			<if test="contractNo!=null">
+				contractNo=#{contractNo},
+			</if>
+			<if test="product!=null">
+				product=#{product},
+			</if>
+			<if test="alarmDesc!=null">
+				alarmDesc=#{alarmDesc},
+			</if>
+			<if test="alarmType!=null">
+				alarmType=#{alarmType},
+			</if>
+			<if test="alarmDate!=null">
+				alarmDate=#{alarmDate},
+			</if>
+			<if test="alarmTime!=null">
+				alarmTime=#{alarmTime},
+			</if>
+			<if test="handleState!=null">
+				handleState=#{handleState},
+			</if>
+			<if test="instanceId!=null">
+				instanceId=#{instanceId},
+			</if>
+			<if test="execId!=null">
+				execId=#{execId},
+			</if>
+			<if test="nodeState!=null">
+				nodeState=#{nodeState},
+			</if>
+			<if test="updateUser!=null">
+				updateUser=#{updateUser},
+			</if>
+			updateTime=now()
+		</set>
+		where id=#{id}
+		
+	</update>
+	
+	<select id="loadById" parameterType="int" resultMap="result">
+		select * from alarm_details
+		where id=#{id}
+		limit 1
+	</select>
+	
+	<select id="queryByParams" parameterType="com.demo.ActivitiDemo.bean.AlarmParams" resultMap="result">
+		select * from alarm_details
+		where 1=1
+		<if test="serialNo!=null and serialNo!=''">
+			and serialNo=#{serialNo}
+		</if>
+		<if test="contractNo!=null and contractNo!=''">
+			and contractNo=#{contractNo}
+		</if>
+	</select>
+	
+	<select id="queryByExecId" parameterType="java.lang.String" resultMap="result">
+		select * from alarm_details
+		where execId=#{execId}
+	</select>
+</mapper>
